@@ -1,7 +1,6 @@
 {
-  "name": "mate",
-  "private": true,
-  "version": "0.0.0",
+  "name": "mate-ts",
+  "version": "0.0.1",
   "main": "./dist/mate-ts.umd.js",
   "types": "./dist/index.d.ts",
   "type": "module",
