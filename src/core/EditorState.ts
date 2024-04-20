@@ -1,4 +1,5 @@
-import { OffsetOutOfRangeException } from "./exceptions/OffsetOutOfRangeException.ts"
+import { assert } from "console"
+import { BaseIterator, some } from "ts-result-meow"
 
 type StylesType = "bold" | "italic" | "underline"
 
@@ -38,36 +39,34 @@ export class EditorState {
             return
         }
 
-        if (offset > this.text.length) {
-            throw new OffsetOutOfRangeException("Вы вышли за границу текста")
-        }
+        assert(offset > this.text.length, "Offset can't be more than text length")
 
-        this.slices = this.slices.filter((slice) => {
-            if (offset > slice.offset && offset + size < slice.offset + slice.size) {
+        const iterator = new BaseIterator(this.slices)
+
+        const newSlice = iterator.filterMap((val) => {
+            if (offset > val.offset && offset + size < slice.offset + slice.size) {
                 return {
-                    ...slice,
-                    offset: slice.offset + (slice.offset + slice.size - (offset + size)),
+                    ...val,
+                    offset: val.offset + (val.offset + val.size - (offset + size)),
                 }
             }
 
-            if (offset > slice.offset && offset < slice.offset + slice.size) {
+            if (offset > val.offset && offset < val.offset + val.size) {
                 return {
-                    ...slice,
-                    size: slice.size - (offset + size - slice.offset + slice.size),
+                    ...val,
+                    size: val.size - (offset + size - val.offset + val.size),
                 }
             }
 
-            if (offset < slice.offset && offset < slice.offset + slice.size) {
-                return {
-                    ...slice,
-                    offset: slice.offset - (slice.offset - offset),
-                    size: slice.size - (slice.size - size),
-                }
+            if (offset < val.offset && offset < val.offset + val.size) {
+                return some({
+                    ...val,
+                    offset: val.offset - (val.offset - offset),
+                    size: val.size - (val.size - size),
+                })
             }
-        })
+        }) as BaseIterator<ISlice>
+
+        this.slices = newSlice.collect()
     }
 }
-
-// if (offset < slice.offset && offset + size > slice.offset) {
-//     return
-// }
