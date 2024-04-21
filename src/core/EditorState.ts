@@ -1,30 +1,19 @@
 import { assert } from "console"
-import { BaseIterator, some } from "ts-result-meow"
+import { BaseIterator, Option, none, some } from "ts-result-meow"
 
 type StylesType = "bold" | "italic" | "underline"
-
-interface ISlice {
-    offset: number
-    size: number
-    styles: StylesType[]
-}
+type RemoveType = "Left" | "Right" | "Normal"
 
 export class EditorState {
-    slices: ISlice[]
+    slices: Slice[]
     text: string
 
     public constructor(text: string) {
         this.text = text
-        this.slices = [
-            {
-                offset: 0,
-                size: text.length,
-                styles: [],
-            },
-        ]
+        this.slices = [new Slice(0, text.length, [])]
     }
 
-    public addSlice(offset: number, size: number, styles: StylesType[]) {
+    public splitSlice(index: number) {
         this.slices.push({
             offset: offset,
             size: size,
@@ -32,41 +21,77 @@ export class EditorState {
         })
     }
 
-    public removeText(offset: number, size: number) {
-        if (offset <= 0) {
-            this.slices = []
-            this.text = ""
+    public removeSliceByRange(start: number, end: number) {
+        // todo
+    }
+
+    public removeSliceByIndex(index: number, type: RemoveType) {
+        const slice = this.getSliceByIndex(index).unwrap()
+        if (type === "Normal") {
+            slice.clearStyles()
             return
         }
 
-        assert(offset > this.text.length, "Offset can't be more than text length")
+        if (type === "Left") {
+            const prevSlice = this.getSliceByIndex(index - 1).unwrap()
+            prevSlice.setSize(prevSlice.getSize() + slice.getSize())
+        }
 
-        const iterator = new BaseIterator(this.slices)
+        if (type === "Right") {
+            const nextSlice = this.getSliceByIndex(index + 1).unwrap()
+            nextSlice.setOffset(nextSlice.getOffset() - slice.getSize())
+            nextSlice.setSize(nextSlice.getSize() + slice.getSize())
+        }
 
-        const newSlice = iterator.filterMap((val) => {
-            if (offset > val.offset && offset + size < slice.offset + slice.size) {
-                return {
-                    ...val,
-                    offset: val.offset + (val.offset + val.size - (offset + size)),
-                }
-            }
+        this.slices.splice(index, 1)
+    }
 
-            if (offset > val.offset && offset < val.offset + val.size) {
-                return {
-                    ...val,
-                    size: val.size - (offset + size - val.offset + val.size),
-                }
-            }
+    public getSlices(): Slice[] {
+        return this.slices
+    }
 
-            if (offset < val.offset && offset < val.offset + val.size) {
-                return some({
-                    ...val,
-                    offset: val.offset - (val.offset - offset),
-                    size: val.size - (val.size - size),
-                })
-            }
-        }) as BaseIterator<ISlice>
+    public getSliceByIndex(index: number): Option<Slice> {
+        const val = this.slices.at(index)
+        if (!val) {
+            return none()
+        }
 
-        this.slices = newSlice.collect()
+        return some(val)
+    }
+}
+
+export class Slice {
+    private offset: number
+    private size: number
+    private styles: StylesType[]
+
+    public constructor(offset: number, size: number, styles: StylesType[]) {
+        this.offset = offset
+        this.size = size
+        this.styles = styles
+    }
+
+    public clearStyles() {
+        this.styles = []
+    }
+
+    public setSize(size: number) {
+        this.size = size
+    }
+
+    public setOffset(offset: number) {
+        this.offset = offset
+    }
+
+    public getOffset(): number {
+        return this.offset
+    }
+
+    public getSize(): number {
+        return this.size
+    }
+
+    public getStyles(): StylesType[] {
+        return this.styles
     }
 }
