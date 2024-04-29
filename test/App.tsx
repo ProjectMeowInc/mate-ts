@@ -1,5 +1,8 @@
+import React from "react"
+import { Editor } from "../src/index"
+
 function App() {
-    return <div>Hello world!</div>
+    return <Editor />
 }
 
 export default App
