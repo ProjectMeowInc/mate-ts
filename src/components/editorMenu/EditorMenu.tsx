@@ -15,8 +15,8 @@ export const EditorMenu: FC<IProps> = ({ icons }) => {
         return
     }
 
-    const styleToogleHandler = (style: StyleType) => {
-        let cmdChain = editor.can().chain().focus()
+    const styleToggleHandler = (style: StyleType) => {
+        const cmdChain = editor.chain().focus()
         switch (style) {
             case "Bold":
                 cmdChain.toggleBold().run()
@@ -35,25 +35,25 @@ export const EditorMenu: FC<IProps> = ({ icons }) => {
     return (
         <div className={c.editor_menu}>
             <EditorButton
-                onClick={() => editor.can().chain().focus().toggleBold().run()}
+                onClick={() => styleToggleHandler("Bold")}
                 className={c.editor_button}
                 defaultText="B"
                 href={icons?.boldIconHref}
             />
             <EditorButton
-                onClick={() => styleToogleHandler("Italic")}
+                onClick={() => styleToggleHandler("Italic")}
                 className={c.editor_button}
                 defaultText="I"
                 href={icons?.italicIconHref}
             />
             <EditorButton
-                onClick={() => styleToogleHandler("Strike")}
+                onClick={() => styleToggleHandler("Strike")}
                 className={c.editor_button}
                 defaultText="S"
                 href={icons?.strikeIconHref}
             />
             <EditorButton
-                onClick={() => styleToogleHandler("Quote")}
+                onClick={() => styleToggleHandler("Quote")}
                 className={c.editor_button}
                 defaultText="Q"
                 href={icons?.quoteHref}
