@@ -10,8 +10,8 @@ interface IProps {
 export const EditorButton: FC<IProps> = ({ href, defaultText, className, onClick }) => {
     // todo: use img
     return (
-        <div onClick={onClick} className={className}>
+        <button onClick={onClick} className={className}>
             {href ? href : defaultText}
-        </div>
+        </button>
     )
 }

@@ -1,10 +1,11 @@
 .editor_menu {
     display: flex;
     min-width: 440px;
-    background-color: white !important;
+    background-color: white;
 }
 
 .editor_button {
     color: #756cbf;
     cursor: pointer;
+    padding: 10px;
 }

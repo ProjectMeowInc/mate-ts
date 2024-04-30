@@ -3,20 +3,19 @@ import { EditorButton } from "../editorButton/EditorButton"
 import { IIconsProps } from "../../shared/iconsProps"
 import c from "./editorMenu.module.css"
 import { StyleType } from "../../shared/styleType"
-import { Editor } from "@tiptap/react"
+import { useCurrentEditor } from "@tiptap/react"
 
 interface IProps {
     icons?: IIconsProps
-    editor: Editor
 }
 
-export const EditorMenu: FC<IProps> = ({ icons, editor }) => {
-    const styleToogleHandler = (style: StyleType) => {
-        if (!editor) {
-            alert("Wait editor loading...")
-            return
-        }
+export const EditorMenu: FC<IProps> = ({ icons }) => {
+    const { editor } = useCurrentEditor()
+    if (!editor) {
+        return
+    }
 
+    const styleToogleHandler = (style: StyleType) => {
         let cmdChain = editor.can().chain().focus()
         switch (style) {
             case "Bold":
@@ -36,7 +35,7 @@ export const EditorMenu: FC<IProps> = ({ icons, editor }) => {
     return (
         <div className={c.editor_menu}>
             <EditorButton
-                onClick={() => styleToogleHandler("Bold")}
+                onClick={() => editor.can().chain().focus().toggleBold().run()}
                 className={c.editor_button}
                 defaultText="B"
                 href={icons?.boldIconHref}
