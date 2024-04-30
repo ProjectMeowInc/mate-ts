@@ -7,9 +7,10 @@ import { useCurrentEditor } from "@tiptap/react"
 
 interface IProps {
     icons?: IIconsProps
+    submitHandler: () => void
 }
 
-export const EditorMenu: FC<IProps> = ({ icons }) => {
+export const EditorMenu: FC<IProps> = ({ icons, submitHandler }) => {
     const { editor } = useCurrentEditor()
     if (!editor) {
         return
@@ -34,30 +35,35 @@ export const EditorMenu: FC<IProps> = ({ icons }) => {
 
     return (
         <div className={c.editor_menu}>
-            <EditorButton
-                onClick={() => styleToggleHandler("Bold")}
-                className={c.editor_button}
-                defaultText="B"
-                href={icons?.boldIconHref}
-            />
-            <EditorButton
-                onClick={() => styleToggleHandler("Italic")}
-                className={c.editor_button}
-                defaultText="I"
-                href={icons?.italicIconHref}
-            />
-            <EditorButton
-                onClick={() => styleToggleHandler("Strike")}
-                className={c.editor_button}
-                defaultText="S"
-                href={icons?.strikeIconHref}
-            />
-            <EditorButton
-                onClick={() => styleToggleHandler("Quote")}
-                className={c.editor_button}
-                defaultText="Q"
-                href={icons?.quoteHref}
-            />
+            <div className={c.style_buttons}>
+                <EditorButton
+                    onClick={() => styleToggleHandler("Bold")}
+                    className={c.editor_button}
+                    defaultText="B"
+                    href={icons?.boldIconHref}
+                />
+                <EditorButton
+                    onClick={() => styleToggleHandler("Italic")}
+                    className={c.editor_button}
+                    defaultText="I"
+                    href={icons?.italicIconHref}
+                />
+                <EditorButton
+                    onClick={() => styleToggleHandler("Strike")}
+                    className={c.editor_button}
+                    defaultText="S"
+                    href={icons?.strikeIconHref}
+                />
+                <EditorButton
+                    onClick={() => styleToggleHandler("Quote")}
+                    className={c.editor_button}
+                    defaultText="Q"
+                    href={icons?.quoteHref}
+                />
+            </div>
+            <div className={c.send_button}>
+                <EditorButton onClick={() => submitHandler()} defaultText="Send" className={c.editor_button} />
+            </div>
         </div>
     )
 }

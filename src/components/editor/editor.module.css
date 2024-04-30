@@ -1,4 +1,10 @@
 .editor {
     background-color: white;
-    min-width: 440px;
+    border: 1px solid #545f71;
+    border-radius: 6px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
 }

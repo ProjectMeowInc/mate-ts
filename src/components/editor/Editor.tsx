@@ -3,10 +3,12 @@ import { EditorMenu } from "../editorMenu/EditorMenu"
 import { EditorProvider, Extensions } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { IIconsProps } from "../../shared/iconsProps"
+import c from "./editor.module.css"
 
 interface IProps {
     placeholder?: string
     icons?: IIconsProps
+    submitHandler: () => void
 }
 
 const extensions: Extensions = [
@@ -22,12 +24,16 @@ const extensions: Extensions = [
     }),
 ]
 
-export const Editor: FC<IProps> = ({ placeholder }) => {
+export const Editor: FC<IProps> = ({ placeholder, submitHandler }) => {
     return (
-        <EditorProvider
-            slotAfter={<EditorMenu />}
-            extensions={extensions}
-            content={`<div>${placeholder ?? ""}</div>`}
-        ><></></EditorProvider>
+        <div className={c.editor}>
+            <EditorProvider
+                slotAfter={<EditorMenu submitHandler={submitHandler} />}
+                extensions={extensions}
+                content={`<div>${placeholder ?? ""}</div>`}
+            >
+                <></>
+            </EditorProvider>
+        </div>
     )
 }
