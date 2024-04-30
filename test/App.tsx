@@ -1,5 +1,4 @@
-import React from "react"
-import { Editor } from "../src/index"
+import { Editor } from "../src"
 
 const content = `<h2>
 Hi there,
