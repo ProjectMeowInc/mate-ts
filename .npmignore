@@ -2,4 +2,4 @@
 /src
 .idea
 package-lock.json
-./test
+/test

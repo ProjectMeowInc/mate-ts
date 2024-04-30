@@ -1,0 +1,23 @@
+.editor_menu {
+    display: flex;
+    background-color: white;
+}
+
+.style_buttons {
+    flex: 9;
+}
+
+.send_button {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+}
+
+.editor_button {
+    color: #756cbf;
+    cursor: pointer;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+}
