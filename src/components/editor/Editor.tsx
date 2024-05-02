@@ -9,6 +9,12 @@ interface IProps {
     placeholder?: string
     icons?: IIconsProps
     submitHandler: () => void
+    styles?: {
+        width?: string
+        height?: string
+        accentColor?: string
+        backgroundColor?: string
+    }
 }
 
 const extensions: Extensions = [
@@ -21,14 +27,27 @@ const extensions: Extensions = [
             keepMarks: true,
             keepAttributes: false,
         },
+
+        paragraph: {
+            HTMLAttributes: {
+                class: c.editor__paragraph,
+            }
+        }
     }),
 ]
 
-export const Editor: FC<IProps> = ({ placeholder, submitHandler }) => {
+export const Editor: FC<IProps> = ({ placeholder, submitHandler, styles, icons }) => {
+
     return (
-        <div className={c.editor}>
+        <div className={c.editor} style={{
+            ...styles,
+            color: styles?.accentColor,
+            border: `1px solid ${styles?.accentColor}`
+        }}>
             <EditorProvider
-                slotAfter={<EditorMenu submitHandler={submitHandler} />}
+                slotAfter={
+                <EditorMenu submitHandler={submitHandler} icons={icons} />
+            }
                 extensions={extensions}
                 content={`<div>${placeholder ?? ""}</div>`}
             >

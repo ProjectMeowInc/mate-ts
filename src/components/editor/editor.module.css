@@ -1,10 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 .editor {
-    background-color: white;
-    border: 1px solid #545f71;
-    border-radius: 6px;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: "Raleway", serif;
+}
+
+.editor *:focus {
+    outline: none;
+}
+
+.editor__paragraph {
+    margin: 0;
+    padding: 15px;
 }

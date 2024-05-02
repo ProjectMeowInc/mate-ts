@@ -5,13 +5,19 @@ interface IProps {
     defaultText: string
     className?: string
     onClick?: () => void
+    styles?: IEditorButtonStyles
 }
 
-export const EditorButton: FC<IProps> = ({ href, defaultText, className, onClick }) => {
+interface IEditorButtonStyles {
+    color?: string
+    backgroundColor?: string
+}
+
+export const EditorButton: FC<IProps> = ({ href, defaultText, className, onClick, styles }) => {
     // todo: use img
     return (
-        <button onClick={onClick} className={className}>
-            {href ? href : defaultText}
+        <button onClick={onClick} className={className} style={styles}>
+            {href ? <img src={href} alt="" /> : defaultText}
         </button>
     )
 }

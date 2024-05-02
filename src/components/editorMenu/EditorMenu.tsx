@@ -5,6 +5,7 @@ import c from "./editorMenu.module.css"
 import { StyleType } from "../../shared/styleType"
 import { useCurrentEditor } from "@tiptap/react"
 
+
 interface IProps {
     icons?: IIconsProps
     submitHandler: () => void
@@ -30,6 +31,13 @@ export const EditorMenu: FC<IProps> = ({ icons, submitHandler }) => {
                 break
             case "Quote":
                 cmdChain.toggleBlockquote().run()
+                break
+            case "BulletList":
+                cmdChain.toggleBulletList().run()
+                break
+            case "OrderedList":
+                cmdChain.toggleOrderedList().run()
+                break
         }
     }
 
@@ -54,6 +62,22 @@ export const EditorMenu: FC<IProps> = ({ icons, submitHandler }) => {
                     defaultText="S"
                     href={icons?.strikeIconHref}
                 />
+
+
+                <EditorButton
+                    onClick={() => styleToggleHandler("OrderedList")}
+                    className={c.editor_button}
+                    defaultText="LN"
+                    href={icons?.numericListHref}
+                />
+
+                <EditorButton
+                    defaultText={"LM"}
+                    onClick={() => styleToggleHandler("BulletList")}
+                    className={c.editor_button}
+                    href={icons?.markedListHref}
+                />
+
                 <EditorButton
                     onClick={() => styleToggleHandler("Quote")}
                     className={c.editor_button}
@@ -62,7 +86,7 @@ export const EditorMenu: FC<IProps> = ({ icons, submitHandler }) => {
                 />
             </div>
             <div className={c.send_button}>
-                <EditorButton onClick={() => submitHandler()} defaultText="Send" className={c.editor_button} />
+                <EditorButton onClick={() => submitHandler()} href={""} defaultText="Отправить" className={c.editor_button} styles={{color: "#FFF", backgroundColor: "#756CBF"}} />
             </div>
         </div>
     )
